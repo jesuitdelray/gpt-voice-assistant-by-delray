@@ -1,134 +1,146 @@
-"use client";
+"use client"
 
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from "axios"
+import { useEffect, useState } from "react"
+import styles from "./page.module.scss"
+import { Header } from "@/widgets/Header/ui/Header"
+import { HistorySidebar } from "@/widgets/HistorySidebar/ui/HistorySidebar"
+import { Input } from "@/shared/ui/Input"
+import clsx from "clsx"
+
+export type message = {
+    role: string
+    content: string
+    time: string
+}
 
 export default function Home() {
-  const [listening, setListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
-  const [response, setResponse] = useState("");
+    const [listening, setListening] = useState(false)
+    const [transcript, setTranscript] = useState("")
+    const [response, setResponse] = useState("")
+    const [messages, setMessages] = useState<message[]>([])
+    const [messageText, setMessageText] = useState("")
 
-  useEffect(() => {
-    if (transcript) {
-      sendToGPT();
-    }
-  }, [transcript]);
-
-  const startListening = () => {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-
-    const recognition = new (window as any).webkitSpeechRecognition();
-    recognition.lang = "ru-RU";
-    recognition.onstart = () => {
-      setListening(true);
-    };
-
-    recognition.onresult = (event: any) => {
-      const result = event.results[event.results.length - 1][0].transcript;
-      setTranscript(result);
-    };
-
-    recognition.onend = () => {
-      setListening(false);
-    };
-
-    recognition.start();
-  };
-
-  const sendToGPT = async () => {
-    console.log("Sending to GPT:", transcript);
-    try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          messages: [
-            { role: "user", content: transcript },
-            {
-              role: "system",
-              content: "Пиши как Тревор из гта 5, без матов.",
-            },
-          ],
-          model: "gpt-4o",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-          },
+    useEffect(() => {
+        if (transcript) {
+            sendToGPT()
         }
-      );
-      setResponse(response.data.choices[0].message.content.trim());
-    } catch (error) {
-      console.error("Error fetching GPT response:", error);
+    }, [transcript])
+
+    const startListening = () => {
+        console.log("Start listening")
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel()
+        }
+
+        const recognition = new (window as any).webkitSpeechRecognition()
+        recognition.lang = "ru-RU"
+        recognition.onstart = () => {
+            setListening(true)
+        }
+
+        recognition.onresult = (event: any) => {
+            const result = event.results[event.results.length - 1][0].transcript
+            setTranscript(result)
+            setMessages([
+                ...messages,
+                { role: "user", content: result, time: new Date().toLocaleTimeString() },
+            ])
+        }
+
+        recognition.onend = () => {
+            setListening(false)
+        }
+
+        recognition.start()
     }
-  };
 
-  function speak(text: string) {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-
-      const voices = window.speechSynthesis.getVoices();
-      console.log("Voices:", voices);
-
-      if (voices.length > 0) {
-        console.log("Using voice:", voices[17]);
-        utterance.voice = voices[1];
-      }
-
-      utterance.lang = "ru-RU";
-      utterance.rate = 2;
-      utterance.onend = () => console.log("SpeechSynthesisUtterance.onend");
-      utterance.onerror = (event) => console.error("SpeechSynthesisUtterance.onerror", event);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.error("Speech synthesis not supported");
+    const sendToGPT = async () => {
+        console.log("Sending to GPT:", transcript)
+        try {
+            const response = await axios.post(
+                "https://api.openai.com/v1/chat/completions",
+                {
+                    messages: [
+                        { role: "user", content: transcript || messageText },
+                        {
+                            role: "system",
+                            content: "Отвечай кратко и по делу. Не давай ничего подробнее.",
+                        },
+                    ],
+                    model: "gpt-4o",
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+                    },
+                }
+            )
+            setResponse(response.data.choices[0].message.content.trim())
+            setMessages([
+                ...messages,
+                {
+                    role: "Assistant",
+                    content: response.data.choices[0].message.content.trim(),
+                    time: new Date().toLocaleTimeString(),
+                },
+            ])
+        } catch (error) {
+            console.error("Error fetching GPT response:", error)
+        }
     }
-  }
 
-  useEffect(() => {
-    if (response) {
-      speak(response);
+    function speak(text: string) {
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel()
+            const utterance = new SpeechSynthesisUtterance(text)
+
+            const voices = window.speechSynthesis.getVoices()
+            console.log("Voices:", voices)
+
+            if (voices.length > 0) {
+                console.log("Using voice:", voices[17])
+                utterance.voice = voices[1]
+            }
+
+            utterance.lang = "ru-RU"
+            utterance.rate = 1
+            utterance.onend = () => console.log("SpeechSynthesisUtterance.onend")
+            utterance.onerror = event => console.error("SpeechSynthesisUtterance.onerror", event)
+            window.speechSynthesis.speak(utterance)
+        } else {
+            console.error("Speech synthesis not supported")
+        }
     }
-  }, [response]);
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "20px",
-        padding: "20px",
-        height: "100vh",
-        justifyContent: "center",
-        backgroundColor: "white",
-        overflow: "hidden",
-      }}
-    >
-      <button
-        onClick={startListening}
-        disabled={listening}
-        style={{
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
-          backgroundColor: listening ? "black" : "white",
-          color: listening ? "white" : "black",
-          border: listening ? "none" : "2px solid black",
-          fontSize: "24px",
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontWeight: "bold",
-          transition: "background-color 0.3s ease",
-        }}
-      >
-        {listening ? "🎙️" : "🎙️"}
-      </button>
-    </div>
-  );
+    useEffect(() => {
+        if (response) {
+            speak(response)
+        }
+    }, [response])
+
+    return (
+        <div className={styles.container}>
+            <Header />
+            <div className={styles.contentContainer}>
+                <div className={styles.subContainer}>
+                    <button
+                        onClick={startListening}
+                        disabled={listening}
+                        className={clsx(styles.micButton, listening && styles.micButtonActive)}
+                    >
+                        {listening ? "🎙️" : "🎙️"}
+                    </button>
+                </div>
+                <HistorySidebar
+                    messages={messages}
+                    setMessages={setMessages}
+                    onSuccess={sendToGPT}
+                    messageText={messageText}
+                    setMessageText={setMessageText}
+                />
+            </div>
+        </div>
+    )
 }
