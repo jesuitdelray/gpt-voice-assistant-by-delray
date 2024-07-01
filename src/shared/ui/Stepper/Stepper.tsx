@@ -1,6 +1,6 @@
-import { CheckIcon } from "@/frontend/shared/assets/icons";
 import styles from "./Stepper.module.scss";
 import { Typography } from "../Typography/Typography";
+import { CheckIcon } from "@/shared/icons";
 
 type TStepperProps = {
   status: "inactive" | "active" | "completed";

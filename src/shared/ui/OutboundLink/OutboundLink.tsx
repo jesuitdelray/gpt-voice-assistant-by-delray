@@ -1,7 +1,7 @@
 import styles from "./OutboundLink.module.scss";
 import { ReactNode } from "react";
-import { MoveIcon } from "@/frontend/shared/assets/icons";
 import { Typography } from "../Typography/Typography";
+import { MoveIcon } from "@/shared/icons";
 
 export type TOutboundLinkProps = {
   href: string;

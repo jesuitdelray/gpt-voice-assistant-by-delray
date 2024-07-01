@@ -2,7 +2,7 @@ import { ChangeEvent, useRef } from "react";
 import styles from "./UploadImage.module.scss";
 import { NormalButton } from "../Button";
 import { Typography } from "../Typography/Typography";
-import { EditIcon, PlusIcon, TrashIcon } from "@/frontend/shared/assets/icons";
+import { EditIcon, PlusIcon, TrashIcon } from "@/shared/icons";
 
 type TUploadImageProps = {
   onUpload: (data: string) => void;

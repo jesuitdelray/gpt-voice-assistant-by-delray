@@ -1,5 +1,5 @@
+import { PlusIcon } from "@/shared/icons";
 import styles from "./AddLogo.module.scss";
-import { PlusIcon } from "@/frontend/shared/assets/icons";
 import { HTMLAttributes } from "react";
 
 export function AddLogo({ ...otherProps }: HTMLAttributes<HTMLDivElement>) {

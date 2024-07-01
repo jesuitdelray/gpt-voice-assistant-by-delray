@@ -1,4 +1,4 @@
-import { WarningCircleIcon } from "@/frontend/shared/assets/icons";
+import { WarningCircleIcon } from "@/shared/icons";
 import { Typography } from "../Typography/Typography";
 import styles from "./Textarea.module.scss";
 import clsx from "clsx";

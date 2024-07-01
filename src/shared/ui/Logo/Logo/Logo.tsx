@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 import styles from "./Logo.module.scss";
-import { CompanyIcon } from "@/frontend/shared/assets/icons";
+import { CompanyIcon } from "@/shared/icons";
 
 type TLogoProps = {
   logo?: string | null;

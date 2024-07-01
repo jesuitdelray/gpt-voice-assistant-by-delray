@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon } from "@/frontend/shared/assets/icons";
+import { MagnifyingGlassIcon } from "@/shared/icons";
 import styles from "./SearchInput.module.scss";
 
 type TSearchInputProps = {

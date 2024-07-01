@@ -1,6 +1,6 @@
-import { UserIcon } from "@/frontend/shared/assets/icons";
 import styles from "./Avatar.module.scss";
 import { Typography } from "../Typography/Typography";
+import { UserIcon } from "@/shared/icons";
 
 type TAvatarProps = {
   avatar?: string;

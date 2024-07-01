@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { Typography } from "../Typography/Typography";
 import styles from "./Tag.module.scss";
-import { PlusIcon, XIcon } from "@/frontend/shared/assets/icons";
 import { useState } from "react";
+import { PlusIcon, XIcon } from "@/shared/icons";
 
 type TTagProps = {
   children: string | string[];

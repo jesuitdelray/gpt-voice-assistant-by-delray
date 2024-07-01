@@ -2,7 +2,7 @@ import { ChangeEvent, useRef } from "react";
 import styles from "./UploadLogo.module.scss";
 import { NormalButton } from "../Button";
 import { Typography } from "../Typography/Typography";
-import { PlusIcon, TrashIcon } from "@/frontend/shared/assets/icons";
+import { PlusIcon, TrashIcon } from "@/shared/icons";
 
 type TUploadLogoProps = {
   onUpload: (data: string) => void;

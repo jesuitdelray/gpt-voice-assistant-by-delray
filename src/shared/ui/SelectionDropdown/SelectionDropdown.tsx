@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import styles from "./SelectionDropdown.module.scss";
 import { Typography } from "../Typography/Typography";
-import { CaretDownIcon } from "@/frontend/shared/assets/icons";
 import { HTMLAttributes, useEffect, useRef } from "react";
+import { CaretDownIcon } from "@/shared/icons";
 
 type TSelectionOptions = {
   value: string;
@@ -34,7 +34,7 @@ export function SelectionDropdown({
   className,
   dropdownPosition = "bottom",
   maxHeight = 320,
-  isMaxWidth
+  isMaxWidth,
 }: TSelectionDropdownProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
