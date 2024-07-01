@@ -1,107 +1,82 @@
 :root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
-    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+  --greyscale100: #f5f7fa;
+  --greyscale200: #e0e4ec;
+  --greyscale300: #c4c7d3;
+  --greyscale400: #9ea4b3;
+  --greyscale500: #7f8697;
+  --greyscale600: #656979;
+  --greyscale700: #4b5e59;
+  --greyscale800: #303439;
+  --greyscale900: #152619;
 
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary-white: #fdfdfe;
 
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
+  --error-red: #ff2f49;
 
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
+  --success-green: #00be78;
 
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  --fs-body-1: 16px;
+  --fs-body-2: 14px;
+  --fs-body-3: 12px;
 
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
+  --fs-label-1: 20px;
+  --fs-label-2: 18px;
+  --fs-label-3: 16px;
+  --fs-label-4: 14px;
+  --fs-label-5: 12px;
 
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
+  --fs-heading-1: 88px;
+  --fs-heading-2: 64px;
+  --fs-heading-3: 48px;
+  --fs-heading-4: 40px;
+  --fs-heading-5: 32px;
+  --fs-heading-6: 24px;
+  --fs-heading-7: 18px;
 
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
+
+  --lh-body-1: 26px;
+  --lh-body-2: 22px;
+  --lh-body-3: 18px;
+
+  --lh-label-1: 20px;
+  --lh-label-2: 18px;
+  --lh-label-3: 16px;
+  --lh-label-4: 14px;
+  --lh-label-5: 12px;
+
+  --lh-heading-1: 96px;
+  --lh-heading-2: 72px;
+  --lh-heading-3: 60px;
+  --lh-heading-4: 52px;
+  --lh-heading-5: 36px;
+  --lh-heading-6: 32px;
+  --lh-heading-7: 24px;
+
+
+  --ls-body-1: -0.005em;
+
+  --ls-label-1: -0.02em;
+  --ls-label-2: -0.02em;
+  --ls-label-3: -0.01em;
+  --ls-label-4: -0.01em;
+
+  --ls-heading-1: -0.025em;
+  --ls-heading-2: -0.025em;
+  --ls-heading-3: -0.02em;
+  --ls-heading-4: -0.02em;
+  --ls-heading-5: -0.02em;
+  --ls-heading-6: -0.02em;
+  --ls-heading-7: -0.015em;
+
+
+  --fw-body: 400;
+  --fw-label: 500;
+  --fw-heading: 600;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }

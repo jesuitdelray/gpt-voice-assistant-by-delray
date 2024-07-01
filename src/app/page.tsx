@@ -2,11 +2,24 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import styles from "./page.module.scss";
+import { Header } from "@/widgets/Header/ui/Header";
+import { HistorySidebar } from "@/widgets/HistorySidebar/ui/HistorySidebar";
+import { Input } from "@/shared/ui/Input";
+import clsx from "clsx";
+
+export type message = {
+  role: string;
+  content: string;
+  time: string;
+};
 
 export default function Home() {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [response, setResponse] = useState("");
+  const [messages, setMessages] = useState<message[]>([]);
+  const [messageText, setMessageText] = useState("");
 
   useEffect(() => {
     if (transcript) {
@@ -15,6 +28,7 @@ export default function Home() {
   }, [transcript]);
 
   const startListening = () => {
+    console.log("Start listening");
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
@@ -28,6 +42,7 @@ export default function Home() {
     recognition.onresult = (event: any) => {
       const result = event.results[event.results.length - 1][0].transcript;
       setTranscript(result);
+      setMessages([...messages, { role: "user", content: result, time: new Date().toLocaleTimeString() }]);
     };
 
     recognition.onend = () => {
@@ -44,10 +59,10 @@ export default function Home() {
         "https://api.openai.com/v1/chat/completions",
         {
           messages: [
-            { role: "user", content: transcript },
+            { role: "user", content: transcript || messageText },
             {
               role: "system",
-              content: "Пиши как Тревор из гта 5, без матов.",
+              content: "Отвечай кратко и по делу. Не давай ничего подробнее.",
             },
           ],
           model: "gpt-4o",
@@ -60,6 +75,14 @@ export default function Home() {
         }
       );
       setResponse(response.data.choices[0].message.content.trim());
+      setMessages([
+        ...messages,
+        {
+          role: "Assistant",
+          content: response.data.choices[0].message.content.trim(),
+          time: new Date().toLocaleTimeString(),
+        },
+      ]);
     } catch (error) {
       console.error("Error fetching GPT response:", error);
     }
@@ -71,15 +94,13 @@ export default function Home() {
       const utterance = new SpeechSynthesisUtterance(text);
 
       const voices = window.speechSynthesis.getVoices();
-      console.log("Voices:", voices);
 
       if (voices.length > 0) {
-        console.log("Using voice:", voices[17]);
         utterance.voice = voices[1];
       }
 
       utterance.lang = "ru-RU";
-      utterance.rate = 2;
+      utterance.rate = 1;
       utterance.onend = () => console.log("SpeechSynthesisUtterance.onend");
       utterance.onerror = (event) => console.error("SpeechSynthesisUtterance.onerror", event);
       window.speechSynthesis.speak(utterance);
@@ -88,47 +109,33 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    if (response) {
-      speak(response);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response) {
+  //     speak(response);
+  //   }
+  // }, [response]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "20px",
-        padding: "20px",
-        height: "100vh",
-        justifyContent: "center",
-        backgroundColor: "white",
-        overflow: "hidden",
-      }}
-    >
-      <button
-        onClick={startListening}
-        disabled={listening}
-        style={{
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
-          backgroundColor: listening ? "black" : "white",
-          color: listening ? "white" : "black",
-          border: listening ? "none" : "2px solid black",
-          fontSize: "24px",
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontWeight: "bold",
-          transition: "background-color 0.3s ease",
-        }}
-      >
-        {listening ? "🎙️" : "🎙️"}
-      </button>
+    <div className={styles.container}>
+      {/* <Header /> */}
+      <div className={styles.contentContainer}>
+        <div className={styles.subContainer}>
+          <button
+            onClick={startListening}
+            disabled={listening}
+            className={clsx(styles.micButton, listening && styles.micButtonActive)}
+          >
+            {listening ? "Recording..." : "Click and talk"}
+          </button>
+        </div>
+        <HistorySidebar
+          messages={messages}
+          setMessages={setMessages}
+          onSuccess={sendToGPT}
+          messageText={messageText}
+          setMessageText={setMessageText}
+        />
+      </div>
     </div>
   );
 }
