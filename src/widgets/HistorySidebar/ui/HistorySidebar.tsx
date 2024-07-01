@@ -14,13 +14,16 @@ export function HistorySidebar({
   setMessageText,
 }: {
   messages: message[];
-  setMessages: (messages: message[]) => void;
+  setMessages: (messages: any) => void;
   onSuccess: () => void;
   messageText: string;
   setMessageText: (message: string) => void;
 }) {
   function addNewMessage() {
-    setMessages([...messages, { role: "user", content: messageText, time: new Date().toLocaleTimeString() }]);
+    setMessages((prev: message[]) => [
+      ...prev,
+      { role: "user", content: messageText, time: new Date().toLocaleTimeString() },
+    ]);
     setMessageText("");
     onSuccess();
   }
@@ -29,7 +32,6 @@ export function HistorySidebar({
     if (key !== "Enter") return;
 
     if (messageText.length > 0) {
-      onSuccess();
       addNewMessage();
     }
   }
@@ -67,7 +69,7 @@ export function HistorySidebar({
           onKeyDown={onPressEnter}
         />
 
-        <NormalButton className={styles.button} size="medium" onClick={onSuccess} isDisabled={messageText === ""}>
+        <NormalButton className={styles.button} size="medium" onClick={addNewMessage} isDisabled={messageText === ""}>
           Send
         </NormalButton>
       </div>

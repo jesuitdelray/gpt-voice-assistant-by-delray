@@ -42,7 +42,10 @@ export default function Home() {
     recognition.onresult = (event: any) => {
       const result = event.results[event.results.length - 1][0].transcript;
       setTranscript(result);
-      setMessages([...messages, { role: "user", content: result, time: new Date().toLocaleTimeString() }]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "user", content: result, time: new Date().toLocaleTimeString() },
+      ]);
     };
 
     recognition.onend = () => {
@@ -75,8 +78,8 @@ export default function Home() {
         }
       );
       setResponse(response.data.choices[0].message.content.trim());
-      setMessages([
-        ...messages,
+      setMessages((prevMessages) => [
+        ...prevMessages,
         {
           role: "Assistant",
           content: response.data.choices[0].message.content.trim(),
