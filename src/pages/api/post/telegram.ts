@@ -10,7 +10,7 @@ bot.onText(/\/start/, msg => {
                 [
                     {
                         text: "Открыть веб-приложение",
-                        url: "https://gpt-voice-assistant-by-delray-git-v21-jesuitdelrays-projects.vercel.app/",
+                        url: "https://gpt-voice-assistant-by-delray.vercel.app/",
                     },
                 ],
             ],

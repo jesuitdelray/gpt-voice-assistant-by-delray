@@ -54,7 +54,7 @@ export default function Home() {
     }
 
     async function test() {
-        const response = await axios.get("http://localhost:3000/api/post/telegram")
+        const response = await axios.post("http://localhost:3000/api/post/telegram")
 
         console.log(response)
     }
@@ -135,7 +135,7 @@ export default function Home() {
                         {listening ? "Recording..." : "Click and talk"}
                     </button>
                 </div>
-                <button onClick={test} style={{ height: "24px", width: "24px" }}></button>
+                {/* <button onClick={test} style={{ height: "24px", width: "24px" }}></button> */}
                 <HistorySidebar
                     messages={messages}
                     setMessages={setMessages}
