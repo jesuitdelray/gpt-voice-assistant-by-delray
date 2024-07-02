@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api"
 
-const token = process.env.TELEGRAM_BOT_TOKEN
+const token = process.env.TELEGRAM_BOT_TOKEN as string
 const bot = new TelegramBot(token, { polling: true })
 
 bot.onText(/\/start/, msg => {
@@ -19,6 +19,8 @@ bot.onText(/\/start/, msg => {
     bot.sendMessage(msg.chat.id, "Нажми кнопку ниже, чтобы открыть приложение:", opts)
 })
 
-export default function handler(req, res) {
+export default function handler(res: {
+    status: (arg0: number) => { (): any; new (): any; send: { (arg0: string): void; new (): any } }
+}) {
     res.status(200).send("Telegram bot endpoint")
 }
