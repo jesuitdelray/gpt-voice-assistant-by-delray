@@ -5,6 +5,9 @@ import { useEffect, useState } from "react"
 import styles from "./page.module.scss"
 import { HistorySidebar } from "@/widgets/HistorySidebar/ui/HistorySidebar"
 import clsx from "clsx"
+import { Header } from "@/widgets/Header"
+import { SettingsSidebar } from "@/widgets/SettingsSidebar/SettingsSidebar"
+import AnimatedBackground from "@/shared/ui/AnimatedBackground/AnimatedBackground"
 
 export type message = {
     role: string
@@ -124,8 +127,10 @@ export default function Home() {
 
     return (
         <div className={styles.container}>
-            {/* <Header /> */}
+            <Header />
             <div className={styles.contentContainer}>
+                <SettingsSidebar />
+                <AnimatedBackground />
                 <div className={styles.subContainer}>
                     <button
                         onClick={startListening}
