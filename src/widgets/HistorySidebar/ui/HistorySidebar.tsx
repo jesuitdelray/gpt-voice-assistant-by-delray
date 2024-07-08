@@ -1,78 +1,87 @@
-import styles from "./HistorySidebar.module.scss";
-import { Input } from "@/shared/ui/Input";
-import { useMemo, useState } from "react";
-import { NormalButton } from "@/shared/ui/Button";
-import { Message } from "./Message/Message";
-import { Typography } from "@/shared/ui/Typography";
-import { message } from "@/app/page";
+import styles from "./HistorySidebar.module.scss"
+import { Input } from "@/shared/ui/Input"
+import { useMemo, useState } from "react"
+import { NormalButton } from "@/shared/ui/Button"
+import { Message } from "./Message/Message"
+import { Typography } from "@/shared/ui/Typography"
+import { message } from "@/app/page"
 
 export function HistorySidebar({
-  messages,
-  setMessages,
-  onSuccess,
-  messageText,
-  setMessageText,
+    messages,
+    setMessages,
+    onSuccess,
+    messageText,
+    setMessageText,
 }: {
-  messages: message[];
-  setMessages: (messages: any) => void;
-  onSuccess: () => void;
-  messageText: string;
-  setMessageText: (message: string) => void;
+    messages: message[]
+    setMessages: (messages: any) => void
+    onSuccess: () => void
+    messageText: string
+    setMessageText: (message: string) => void
 }) {
-  function addNewMessage() {
-    setMessages((prev: message[]) => [
-      ...prev,
-      { role: "user", content: messageText, time: new Date().toLocaleTimeString() },
-    ]);
-    setMessageText("");
-    onSuccess();
-  }
-
-  function onPressEnter({ key }: { key: string }) {
-    if (key !== "Enter") return;
-
-    if (messageText.length > 0) {
-      addNewMessage();
+    function addNewMessage() {
+        setMessages((prev: message[]) => [
+            ...prev,
+            { role: "user", content: messageText, time: new Date().toLocaleTimeString() },
+        ])
+        setMessageText("")
+        onSuccess()
     }
-  }
 
-  const content = useMemo(() => {
-    switch (true) {
-      case messages.length === 0:
-        return (
-          <div className={styles.emptySpaceContainer}>
-            <Typography variant="body-2">No messages yet</Typography>
-          </div>
-        );
-      case messages.length > 0:
-        return messages?.map((message, index) => (
-          <div key={message.content + message.time}>
-            <Message role={message.role} content={message.content} time={message.time} />
-            {index < messages.length - 1 && <div className={styles.divider} />}
-          </div>
-        ));
-      default:
-        null;
+    function onPressEnter({ key }: { key: string }) {
+        if (key !== "Enter") return
+
+        if (messageText.length > 0) {
+            addNewMessage()
+        }
     }
-  }, [messages]);
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.innerContainer}>{content}</div>
-      <div className={styles.bottomContainer}>
-        <Input
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          placeholder="Type your message here"
-          className={styles.textField}
-          inputSize="small"
-          onKeyDown={onPressEnter}
-        />
+    const content = useMemo(() => {
+        switch (true) {
+            case messages.length === 0:
+                return (
+                    <div className={styles.emptySpaceContainer}>
+                        <Typography variant="body-2">No messages yet</Typography>
+                    </div>
+                )
+            case messages.length > 0:
+                return messages?.map((message, index) => (
+                    <div key={message.content + message.time}>
+                        <Message
+                            role={message.role}
+                            content={message.content}
+                            time={message.time}
+                        />
+                        {index < messages.length - 1 && <div className={styles.divider} />}
+                    </div>
+                ))
+            default:
+                null
+        }
+    }, [messages])
 
-        <NormalButton className={styles.button} size="medium" onClick={addNewMessage} isDisabled={messageText === ""}>
-          Send
-        </NormalButton>
-      </div>
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <div className={styles.innerContainer}>{content}</div>
+            <div className={styles.inputContainer}>
+                <Input
+                    value={messageText}
+                    onChange={e => setMessageText(e.target.value)}
+                    placeholder="Type your message here"
+                    className={styles.textField}
+                    inputSize="small"
+                    onKeyDown={onPressEnter}
+                />
+
+                <NormalButton
+                    className={styles.button}
+                    size="medium"
+                    onClick={addNewMessage}
+                    isDisabled={messageText === ""}
+                >
+                    Send
+                </NormalButton>
+            </div>
+        </div>
+    )
 }
