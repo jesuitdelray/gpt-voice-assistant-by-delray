@@ -131,7 +131,7 @@ export default function Home() {
             <div className={styles.contentContainer}>
                 <SettingsSidebar />
                 <AnimatedBackground />
-                <div className={styles.subContainer}>
+                {/* <div className={styles.subContainer}>
                     <button
                         onClick={startListening}
                         disabled={listening}
@@ -139,7 +139,7 @@ export default function Home() {
                     >
                         {listening ? "Recording..." : "Click and talk"}
                     </button>
-                </div>
+                </div> */}
                 {/* <button onClick={test} style={{ height: "24px", width: "24px" }}></button> */}
                 <HistorySidebar
                     messages={messages}
