@@ -1,6 +1,6 @@
 import styles from "./HistorySidebar.module.scss"
 import { Input } from "@/shared/ui/Input"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { NormalButton } from "@/shared/ui/Button"
 import { Message } from "./Message/Message"
 import { Typography } from "@/shared/ui/Typography"
@@ -19,6 +19,8 @@ export function HistorySidebar({
     messageText: string
     setMessageText: (message: string) => void
 }) {
+    const messagesEndRef = useRef<null | HTMLDivElement>(null)
+
     function addNewMessage() {
         setMessages((prev: message[]) => [
             ...prev,
@@ -35,6 +37,10 @@ export function HistorySidebar({
             addNewMessage()
         }
     }
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [messages])
 
     const content = useMemo(() => {
         switch (true) {
@@ -62,7 +68,10 @@ export function HistorySidebar({
 
     return (
         <div className={styles.container}>
-            <div className={styles.innerContainer}>{content}</div>
+            <div className={styles.innerContainer}>
+                {content}
+                <div ref={messagesEndRef} />
+            </div>
             <div className={styles.inputContainer}>
                 <Input
                     value={messageText}

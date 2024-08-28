@@ -48,3 +48,24 @@
         left: 0;
     }
 }
+
+.rightSideContainer {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .saveBtn,
+    .clearBtn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+.verticalDivider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--greyscale200);
+}
