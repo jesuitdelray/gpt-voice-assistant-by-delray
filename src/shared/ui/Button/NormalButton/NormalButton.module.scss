@@ -54,6 +54,7 @@
         &:disabled {
             background: var(--greyscale100);
             color: var(--greyscale300);
+            cursor: default;
         }
 
         &.isSubmited {

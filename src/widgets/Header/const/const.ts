@@ -1,1 +1,1 @@
-export const labels = ["Voice Assistant", "Website Parser", "PDF Builder"]
+export const labels = ["Study Mentor"]
